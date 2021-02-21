@@ -1,16 +1,38 @@
 package com.laioffer.travel_planner_backend.message.request;
 
+import com.laioffer.travel_planner_backend.entity.Gender;
+
 import java.util.Set;
 
 public class SignUpForm {
 
+    private String email;
+
     private String username;
 
-    private String email;
-    
-    private Set<String> role;
+//    private Set<String> role;
 
     private String password;
+
+    private String dateOfBirth;
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    private Gender gender;
 
     public String getUsername() {
         return username;
@@ -36,11 +58,21 @@ public class SignUpForm {
         this.password = password;
     }
     
-    public Set<String> getRole() {
-    	return this.role;
-    }
-    
-    public void setRole(Set<String> role) {
-    	this.role = role;
+//    public Set<String> getRole() {
+//    	return this.role;
+//    }
+//
+//    public void setRole(Set<String> role) {
+//    	this.role = role;
+//    }
+
+    @Override
+    public String toString() {
+        return "SignUpForm{" +
+                "email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", gender=" + gender +
+                '}';
     }
 }

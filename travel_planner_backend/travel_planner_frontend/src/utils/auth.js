@@ -1,6 +1,6 @@
 const SERVER_ORIGIN = '';
 
-const loginUrl = `${SERVER_ORIGIN}/login`;
+const loginUrl = `${SERVER_ORIGIN}/api/auth/login`;
 
 export const login = (credential) => {
   return fetch(loginUrl, {
@@ -14,12 +14,12 @@ export const login = (credential) => {
     if (response.status !== 200) {
       throw Error('Fail to log in');
     }
-    console.log("log", response.json());
+    // console.log("log", response.json());
     return response.json();
   })
 }
 
-const registerUrl = `${SERVER_ORIGIN}/register`;
+const registerUrl = `${SERVER_ORIGIN}/api/auth/signup`;
 
 export const register = (data) => {
   return fetch(registerUrl, {

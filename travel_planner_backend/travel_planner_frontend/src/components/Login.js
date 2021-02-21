@@ -5,7 +5,9 @@ import { login } from '../utils/auth';
  
 class Login extends React.Component {
   state = {
-    displayModal: false
+    displayModal: false,
+      accessToken : null,
+      tokenType : null
   }
 
   handleCancel = () => {
@@ -24,10 +26,12 @@ class Login extends React.Component {
     login(data)
       .then((data) => {
         this.setState({
-          displayModal: false,
+            displayModal: false,
+            accessToken : data.accessToken,
+            tokenType : data.tokenType
         })
-        console.log(data);
-        message.success(`Welcome back, ${data}`);
+        // console.log("data", data);
+        message.success(`Welcome back`);
         this.props.onSuccess();
       }).catch((err) => {
         console.log(err);
@@ -45,7 +49,7 @@ class Login extends React.Component {
             preserve={false}
           >
             <Form.Item
-              name="emailId"
+              name="username"
               rules={[{ required: true, message: 'Please input your Username!' }]}
             >
               <Input prefix={<UserOutlined />} placeholder="Username" />

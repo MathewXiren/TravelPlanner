@@ -21,10 +21,10 @@ const App = () => (
               <Link to="/planner">PlannerPage</Link>
             </li>
             <li>
-              <Link to="/login">LoginPage</Link>
+              <Link to="/api/auth/login">LoginPage</Link>
             </li>
             <li>
-              <Link to="/register">Register</Link>
+              <Link to="/api/auth/signup">Register</Link>
             </li>
           </ul>
         </nav>
@@ -32,10 +32,10 @@ const App = () => (
           <Route path="/planner">
             <PlannerPage />
           </Route>
-          <Route path="/register">
+          <Route path="/api/auth/signup">
             <RegisterPage />
           </Route>
-          <Route path="/login">
+          <Route path="/api/auth/login">
             <LoginPage />
           </Route>
           <Route path="/">

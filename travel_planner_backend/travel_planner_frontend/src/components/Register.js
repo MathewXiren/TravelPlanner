@@ -30,11 +30,18 @@ class Register extends React.Component {
             onFinish={this.onFinish}
             preserve={false}
           >
-            <Form.Item
-              name="emailId"
+          <Form.Item
+              name="username"
               rules={[{ required: true, message: 'Please input your Username!' }]}
+          >
+            <Input prefix={<UserOutlined />} placeholder="username" />
+          </Form.Item>
+
+            <Form.Item
+              name="email"
+              rules={[{ required: true, message: 'Please input your Email !' }]}
             >
-              <Input prefix={<UserOutlined />} placeholder="email id" />
+              <Input prefix={<UserOutlined />} placeholder="email" />
             </Form.Item>
             <Form.Item
               name="password"
@@ -54,7 +61,7 @@ class Register extends React.Component {
               />
             </Form.Item>
             <Form.Item
-              name="date_of_birth"
+              name="dateOfBirth"
               rules={[{ required: true, message: 'Please input your date of birth!' }]}
             >
               <Input

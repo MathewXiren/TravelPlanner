@@ -3,6 +3,7 @@ package com.laioffer.travel_planner_backend.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,21 +21,21 @@ public class User implements Serializable {
     @Id
     private String email;
 
-    private String password;
-
+    @NaturalId
     private String username;
-
-
+    private String password;
     private boolean enabled;
 
     public User() {
 
     }
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    public User(String email, String username, String password, Date date, Gender gender) {
         this.email = email;
+        this.username = username;
         this.password = password;
+        this.dateOfBirth = date;
+        this.gender = gender;
     }
 
     public String getUsername() {
@@ -54,7 +55,7 @@ public class User implements Serializable {
 
 
     @JsonFormat(pattern="yyyy-MM-dd")
-    private java.sql.Date dateOfBirth;
+    private Date dateOfBirth;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -124,7 +125,10 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "emailId='" + email + '\'' +
+                "email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", enabled=" + enabled +
+                ", roles=" + roles +
                 ", dateOfBirth=" + dateOfBirth +
                 ", gender=" + gender +
                 '}';

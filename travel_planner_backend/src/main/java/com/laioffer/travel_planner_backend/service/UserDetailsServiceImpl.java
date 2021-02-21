@@ -1,8 +1,8 @@
 package com.laioffer.travel_planner_backend.service;
 
 
-import com.laioffer.travel_planner_backend.dao.UserDao;
 import com.laioffer.travel_planner_backend.entity.User;
+import com.laioffer.travel_planner_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,16 +14,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	
-        User user = userDao.getByUserName(username);
-        if (user == null){
-            throw new UsernameNotFoundException("User Not Found with -> username or email : " + username);
-        }
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User Not Found with -> username : " + username)
+                );
+
+        return UserPrinciple.build(user);
+    }
+
+    @Transactional
+    public UserDetails loadUserByEmail(String email)
+            throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User Not Found with -> username or email : " + email)
+                );
 
         return UserPrinciple.build(user);
     }
