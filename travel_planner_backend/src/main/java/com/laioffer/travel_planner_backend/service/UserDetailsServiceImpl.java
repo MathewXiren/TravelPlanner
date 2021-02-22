@@ -2,6 +2,7 @@ package com.laioffer.travel_planner_backend.service;
 
 
 import com.laioffer.travel_planner_backend.entity.User;
+import com.laioffer.travel_planner_backend.entity.UserPrinciple;
 import com.laioffer.travel_planner_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,15 +30,45 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return UserPrinciple.build(user);
     }
 
+
     @Transactional
     public UserDetails loadUserByEmail(String email)
             throws UsernameNotFoundException {
 
-        User user = userRepository.findByUsername(email)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User Not Found with -> username or email : " + email)
+                        new UsernameNotFoundException("User Not Found with -> email : " + email)
                 );
 
         return UserPrinciple.build(user);
+    }
+
+    @Transactional
+    public User getUserByEmail(String email)
+            throws UsernameNotFoundException {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User Not Found with -> email : " + email)
+                );
+
+        return user;
+    }
+
+    @Transactional
+    public User getUserByUsername(String username)
+            throws UsernameNotFoundException {
+
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User Not Found with -> email : " + username)
+                );
+
+        return user;
+    }
+
+    @Transactional
+    public void save(User user) {
+        userRepository.save(user);
     }
 }

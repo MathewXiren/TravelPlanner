@@ -3,8 +3,13 @@ package com.laioffer.travel_planner_backend.controller;
 import com.laioffer.travel_planner_backend.entity.Day;
 import com.laioffer.travel_planner_backend.entity.Place;
 import com.laioffer.travel_planner_backend.entity.Trip;
+import com.laioffer.travel_planner_backend.entity.User;
 import com.laioffer.travel_planner_backend.service.TripService;
+import com.laioffer.travel_planner_backend.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +23,24 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
-    @GetMapping("trip/{tripId}")
+    @Autowired
+    private UserDetailsServiceImpl userService;
+
+    @GetMapping("trip/id/{tripId}")
     public Trip getTripById(@PathVariable(value = "tripId") long tripId) {
         return tripService.getTripById(tripId);
     }
+
+    @GetMapping("trip/name/{tripName}")
+    public Trip getTripByName(@PathVariable(value = "tripName") String tripName) {
+        return tripService.getTripByTripName(tripName);
+    }
+
+    @GetMapping("trip/username/{userEmail}")
+    public List<Trip> getgetTripsByUserEmail(@PathVariable(value = "userEmail") String userEmail) {
+        return tripService.getTripsByUserEmail(userEmail);
+    }
+
 
     @GetMapping("trip/days/{tripId}")
     public List<Day> getTripDays(@PathVariable(value = "tripId") int tripId) {
@@ -31,14 +50,31 @@ public class TripController {
 
     @PostMapping("trip/newTrip")
     public String addTrip(@RequestBody Trip trip, BindingResult result) {
+        System.out.println(trip);
         if (result.hasErrors()) {
             return "addTrip error";
         }
-        tripService.addTrip(trip);
-        return "redirect:/getAllTrip";
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        System.out.println(username);
+        User user = userService.getUserByUsername(username);
+        trip.setUser(user);
+        List<Trip> trips = user.getAllTrips();
+        for(Trip userTrip : trips) {
+            System.out.print("trip name "+ userTrip.getName());
+            if (userTrip.getName().equals(trip.getName())) {
+                return "Trip name exist";
+            }
+        }
+        trips.add(trip);
+        user.setAllTrips(trips);
+        userService.save(user);
+//        tripService.saveTrip(trip);
+
+        return "success";
     }
 
-    @PostMapping("trip/{tripId}/{placeId}")
+    @PostMapping("trip/place/{tripId}/{placeId}")
     public String addPlace(@PathVariable(value = "tripId") long tripId, @RequestBody Place place, BindingResult result) {
         if (result.hasErrors()) {
             return "addTrip error";
@@ -47,7 +83,7 @@ public class TripController {
         return "redirect:/getAllTrip";
     }
 
-    @DeleteMapping("trip/{tripId}/{placeId}")
+    @DeleteMapping("trip/place/{tripId}/{placeId}")
     public String deletePlace(@PathVariable(value = "tripId") long tripId, @PathVariable(value = "placeId") String placeId) {
         tripService.deletePlace(tripId, placeId);
         return "redirect:/getAllTrip";

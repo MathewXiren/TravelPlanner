@@ -1,5 +1,7 @@
 package com.laioffer.travel_planner_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -18,7 +20,8 @@ public class Trip implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long tripId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
     @Column(name = "trip_name")
@@ -123,6 +126,16 @@ public class Trip implements Serializable {
 
     public Set<Place> getPlaces() {
         return places;
+    }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "tripId=" + tripId +
+                ", name='" + name + '\'' +
+                ", numDays=" + numDays +
+                ", isPrivate=" + isPrivate +
+                '}';
     }
 
     public void setPlaces(Set<Place> places) {

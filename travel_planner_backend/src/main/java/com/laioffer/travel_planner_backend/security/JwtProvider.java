@@ -1,6 +1,6 @@
 package com.laioffer.travel_planner_backend.security;
 
-import com.laioffer.travel_planner_backend.service.UserPrinciple;
+import com.laioffer.travel_planner_backend.entity.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
