@@ -14,7 +14,6 @@ export const login = (credential) => {
     if (response.status !== 200) {
       throw Error('Fail to log in');
     }
-    // console.log("log", response.json());
     return response.json();
   })
 }

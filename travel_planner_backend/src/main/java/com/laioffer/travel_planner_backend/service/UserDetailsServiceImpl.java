@@ -59,7 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public User getUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User Not Found with -> email : " + username)
                 );

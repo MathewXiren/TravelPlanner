@@ -35,6 +35,7 @@ public class TripService {
     public void deleteTrip(long tripId) {
         Trip trip = getTripById(tripId);
         tripRepository.delete(trip);
+
     }
 
     @Transactional
