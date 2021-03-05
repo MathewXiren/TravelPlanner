@@ -1,77 +1,125 @@
 package com.laioffer.travel_planner_backend.service;
 
-import com.laioffer.travel_planner_backend.dao.DayDao;
-import com.laioffer.travel_planner_backend.dao.StopDao;
 import com.laioffer.travel_planner_backend.entity.Day;
 import com.laioffer.travel_planner_backend.entity.Place;
 import com.laioffer.travel_planner_backend.entity.Stop;
 import com.laioffer.travel_planner_backend.entity.StopType;
+import com.laioffer.travel_planner_backend.repository.DayRepository;
+import com.laioffer.travel_planner_backend.repository.StopRepository;
+import com.laioffer.travel_planner_backend.repository.TripRepository;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 @Service
 public class DayService {
-
+    
     @Autowired
-    private DayDao dayDao;
-
+    private DayRepository dayRepository;
+    
     @Autowired
-    private StopDao stopDao;
-
+    private StopRepository stopRepository;
+    
+    @Autowired
+    private TripRepository tripRepository;
+    
     @Transactional
     public void setRoute(Day day, List<Stop> route) {
         day.setRoute(route);
-        dayDao.update(day);
+        dayRepository.save(day);
     }
-
+    
     @Transactional
-    public void generateDayPath(Day day) {
+    public List<Stop> generateDayPath(Day day) {
         Set<Stop> stops = day.getStops();
-        ArrayList<Stop> route = planRoute(stops);
+        List<Stop> route = planRoute(stops);
         day.setRoute(route);
+        return route;
     }
-    private ArrayList<Stop> planRoute(Set<Stop> places) {
-        return null;
-    }
-
+    
     @Transactional
     public Day getDayById(long dayId) {
-        return dayDao.getDayById(dayId);
+        return dayRepository.findById(dayId).orElseThrow(() ->
+            new ItemNotFoundException("Day Not Found with -> DayId : " + dayId)
+        );
     }
-
+    
     @Transactional
-    public void addPlace(Day day, Place place) {
+    public Stop addPlace(Day day, Place place) {
         Stop newStop = new Stop();
         newStop.setDay(day);
         newStop.setPlace(place);
         newStop.setType(new StopType());
-        stopDao.update(newStop);
+        return stopRepository.save(newStop);
         // Maybe add to day? this should automatically cascade to day
 // 				Set<Stop> stops = day.getStops();
 //				stops.add(newStop);
     }
-
+    
     @Transactional
     public void deletePlace(Day day, Place place) {
         Set<Stop> stops = day.getStops();
+        // System.out.println(stops.toString());
         List<Stop> toDelete = new ArrayList<>();
         for (Stop stop : stops) {
             if (stop.getPlace().equals(place)) {
                 toDelete.add(stop);
             }
         }
+        // System.out.println(toDelete.toString());
         for (Stop stop : toDelete) {
-            this.deleteStop(stop);
+            deleteStop(day, stop);
         }
     }
-
+    
     @Transactional
-    public void deleteStop(Stop stop) {
-        stopDao.deleteStop(stop);
+    public void deleteStop(Day day, Stop stop) {
+        Set<Stop> stops = day.getStops();
+        List<Stop> route = day.getRoute();
+        stops.remove(stop);
+        route.remove(stop);
+        dayRepository.save(day);
+    }
+    
+    private List<Stop> planRoute(Set<Stop> places) {
+        List<Stop> placeList = new ArrayList<>(places);
+        List<Stop> route = new ArrayList<>();
+        if (placeList.size()==0) {
+            return route;
+        }
+        Stop curr = placeList.get(0);
+        while (placeList.size()>0) {
+            route.add(curr);
+            placeList.remove(curr);
+            Stop next = null;
+            double dist = Double.POSITIVE_INFINITY;
+            for (Stop stop: placeList) {
+                double d = getDist(stop, curr);
+                if (d < dist) {
+                    dist = d;
+                    next = stop;
+                }
+            }
+            curr = next;
+        }
+        return route;
+    }
+    
+    private double getDist(Stop stop1, Stop stop2) {
+        return Math.pow(2, (stop1.getPlace().getLatitude() - stop2.getPlace().getLatitude())) + Math
+            .pow(2, (stop1.getPlace().getLongitude() - stop2.getPlace().getLongitude()));
+    }
+    
+    
+    @Transactional
+    public Day newDay(long tripId) {
+        Day day = new Day();
+        day.setTrip(tripRepository.findById(tripId));
+        return dayRepository.save(day);
     }
 }

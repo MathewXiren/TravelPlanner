@@ -1,46 +1,52 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import TravelHeader from './TravelHeader';
+import { Button } from 'antd';
+import Footer from './Footer';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+import { useState } from 'react';
+import NewTrip from './NewTrip';
 import Login from './Login';
-import Register from './Register';
 
-export default class HomePage extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loggedIn: false
-    }
-  }
+const HomePage = (props) => {
+    const { onLoggedInStatus, isLoggedIn, token, trips, onCurTrip, cities } = props;
 
-  signinOnSuccess = () => {
-    // getFavoriteItem().then((data) => {
-    //   this.setState({
-    //     loggedIn: true
-    //   })
-    // }).catch((err) => {
-    //   message.error(err.message);
-    // })
-    console.log("login success")
-  }
-  // signoutOnClick = () => {
-  //   logout()
-  //       .then(() => {
-  //         this.setState({
-  //           loggedIn: false
-  //         })
-  //         message.success(`Successfull signed out`);
-  //       }).catch((err) => {
-  //     message.error(err.message);
-  //   })
-  // }
-
-  render() {
     return (
-        <div>
-          <h1>HomePage</h1>
-          {/*<div>*/}
-          {/*  /!*<Login onSuccess={this.signinOnSuccess}/>*!/*/}
-          {/*  /!*<Register/>*!/*/}
-          {/*</div>*/}
+        <div className="homepage">
+            <div id="homepage-header">
+            <TravelHeader onLoggedInStatus={onLoggedInStatus}
+                         isLoggedIn={isLoggedIn}
+                         token={token}
+                         trips={trips}
+                         onCurTrip={onCurTrip}
+            />
+            </div>
+            <div>
+            <h1>TravelPlanner</h1>
+            <div className="homepage-main">  
+                {
+                    isLoggedIn ? 
+                    <div>
+                        <NewTrip onSuccess={onLoggedInStatus}
+                                 token={token}
+                                 onCurTrip={onCurTrip}
+                                 cities={cities} />
+                    </div>
+                    :
+                    <div>
+                        <Login onSuccess={onLoggedInStatus}/>
+                    </div>
+                }
+                <p>A new way of planning your trip</p>
+            </div>
+            </div>
+            <div>
+                <Footer />
+            </div>
         </div>
     )
-  }
+    
 }
+
+
+export default HomePage;

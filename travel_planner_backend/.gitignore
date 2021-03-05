@@ -37,5 +37,3 @@ build/
 .mvn
 src/main/resources/application.properties
 .idea/
-.idea/*.xml
-.idea/*.iml

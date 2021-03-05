@@ -1,46 +1,67 @@
 package com.laioffer.travel_planner_backend.controller;
 
-
+import com.laioffer.travel_planner_backend.entity.City;
 import com.laioffer.travel_planner_backend.entity.Place;
+import com.laioffer.travel_planner_backend.message.response.CityResponse;
+import com.laioffer.travel_planner_backend.message.response.PlaceResponse;
 import com.laioffer.travel_planner_backend.service.PlaceService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
 public class PlaceController {
+    
     @Autowired
     private PlaceService placeService;
-
-    @PostMapping("place/addPlace")
-    public String addPlace(@RequestBody Place place, BindingResult result) {
-        if (result.hasErrors()) {
-            return "addPlace";
-        }
-        placeService.addPlace(place);
-        return "redirect:/getAllPlace";
+    
+    @PostMapping("place")
+    public Place addPlace(@RequestParam String placeId) {
+        return placeService.addPlace(placeId);
     }
-
-    @DeleteMapping("place/{placeId}")
-    public String deletePlace(@PathVariable(value = "placeId") String placeId) {
+    
+    @DeleteMapping("place")
+    public String deletePlace(@RequestParam String placeId) {
         placeService.deletePlace(placeId);
-        return "redirect:/getAllPlace";
+        return "redirect:/ getAllPlace";
     }
-
-    @GetMapping("place/{placeId}")
-    public String searchPlaceById(@PathVariable(value = "placeId") String placeId) {
-        placeService.searchPlaceById(placeId);
-        // TODO: to complete and return actual place objects
-        return "redirect:/getAllPlace";
+    
+    @GetMapping("place/searchById")
+    public Place searchPlaceById(@RequestParam String placeId) {
+        return placeService.searchPlaceById(placeId);
     }
-
-    @GetMapping("place/{name}")
-    public String searchPlaceByName(@PathVariable(value = "name") String name) {
-        placeService.searchPlaceByName(name);
-        // TODO: to complete and return list of actual place objects
-        return "redirect:/getAllPlace";
+    
+    @GetMapping("place/searchByName")
+    public List<Place> searchPlaceByName(@RequestParam String text,
+        @RequestParam String city) {
+        return placeService.searchPlaceByName(text, city);
     }
-
+    
+    @GetMapping(value = "place/recommendation", params = {"city"})
+    public List<Place> getRecCity(@RequestParam String city) {
+        return placeService.searchPlaceByName("tourist attraction", city);
+    }
+    
+    @GetMapping(value = "place/recommendation", params = {"loc"})
+    public List<Place> getRecNearby(@RequestParam String loc) {
+        return placeService.searchNearby(loc);
+    }
+    
+    @GetMapping("city/getAllCities")
+    public ResponseEntity<?> getAllCities() {
+        List<City> cities = placeService.getAllCities();
+        return ResponseEntity.ok(new CityResponse(cities));
+    }
+    
+    @GetMapping("city/getCity")
+    public City getCityById(@RequestParam long cityId) {
+        return placeService.getCityById(cityId);
+    }
 }

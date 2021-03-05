@@ -1,17 +1,13 @@
 @import '~antd/dist/antd.css';
-@import "./styles/App.css";
-@import "./styles/LoginPage.css";
+@import './styles/Map.css';
+@import "./styles/LoginPage.css"; 
+@import "./styles/SignUpPage.css"; 
+@import "./styles/SignUp.css"; 
+@import "./styles/Footer.css";
+@import "./styles/Login.css";
+@import "./styles/NewTrip.css";
+@import "./styles/HomePage.css"; 
+@import "./styles/TravelHeader.css";
+@import "./styles/Trips.css";
+@import "./styles/PlannerPage.css";
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

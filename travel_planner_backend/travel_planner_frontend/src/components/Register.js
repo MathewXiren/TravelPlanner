@@ -1,11 +1,23 @@
 import { Button, Form, Input, message, Modal } from 'antd';
 import React from 'react';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { register } from '../utils/auth';
+import { register } from '../utils';
  
 class Register extends React.Component {
   state = {
     displayModal: false
+  }
+ 
+  handleCancel = () => {
+    this.setState({
+      displayModal: false,
+    })
+  }
+ 
+  signupOnClick = () => {
+    this.setState({
+      displayModal: true,
+    })
   }
  
   onFinish = (data) => {
@@ -22,26 +34,27 @@ class Register extends React.Component {
  
   render = () => {
     return (
-      <div>
-        <h1>RegisterPage</h1>
-        <Form
+      <>
+        <Button shape="round" type="primary" onClick={this.signupOnClick}>
+          Register</Button>
+        <Modal
+          title="Register"
+          visible={this.state.displayModal}
+          onCancel={this.handleCancel}
+          footer={null}
+          destroyOnClose={true}
+        >
+          <Form
             name="normal_register"
             initialValues={{ remember: true }}
             onFinish={this.onFinish}
             preserve={false}
           >
-          <Form.Item
-              name="username"
-              rules={[{ required: true, message: 'Please input your Username!' }]}
-          >
-            <Input prefix={<UserOutlined />} placeholder="username" />
-          </Form.Item>
-
             <Form.Item
-              name="email"
-              rules={[{ required: true, message: 'Please input your Email !' }]}
+              name="user_id"
+              rules={[{ required: true, message: 'Please input your Username!' }]}
             >
-              <Input prefix={<UserOutlined />} placeholder="email" />
+              <Input prefix={<UserOutlined />} placeholder="Username" />
             </Form.Item>
             <Form.Item
               name="password"
@@ -53,27 +66,29 @@ class Register extends React.Component {
               />
             </Form.Item>
             <Form.Item
-              name="gender"
-              rules={[{ required: true, message: 'Please input your gender!' }]}
+              name="first_name"
+              rules={[{ required: true, message: 'Please input your Firstname!' }]}
             >
               <Input
-                placeholder="gender"
+                placeholder="firstname"
               />
             </Form.Item>
             <Form.Item
-              name="dateOfBirth"
-              rules={[{ required: true, message: 'Please input your date of birth!' }]}
+              name="last_name"
+              rules={[{ required: true, message: 'Please input your Lastname!' }]}
             >
               <Input
-                placeholder="date birth"
+                placeholder="lastname"
               />
             </Form.Item>
+ 
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 Register</Button>
             </Form.Item>
           </Form>
-      </div>
+        </Modal>
+      </>
     )
   }
 }
