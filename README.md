@@ -19,13 +19,13 @@ Spring Boot, Spring Web, Spring Security, Hibernate, MySQL
 * [x] User can save the routes
 
 ## To Be Done
-* [] User can adjust the travel order based on the generated route
-* [] User can set the start point and end point
-* [] Recommend user places in the target city
-* [] Recommend user more places based on the selected places
-* [] Set priority to places(places have to go vs. places want to go)
-* [] Based on historical data, directly recommend user hot trip routes
-* [] Share trip
+* [ ] User can adjust the travel order based on the generated route
+* [ ] User can set the start point and end point
+* [ ] Recommend user places in the target city
+* [ ] Recommend user more places based on the selected places
+* [ ] Set priority to places(places have to go vs. places want to go)
+* [ ] Based on historical data, directly recommend user hot trip routes
+* [ ] Share trip
 
 ### Contact
 Want to join us?
