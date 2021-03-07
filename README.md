@@ -8,7 +8,7 @@ React, Google Map React, Ant Design
 ### Backend
 Spring Boot, Spring Web, Spring Security, Hibernate, MySQL
 
-## Current Funcionality
+## Current Functionality
 * [x] User sign up, log in, log out
 * [x] User can search a city and plan a trip route on this city
 * [x] User can select the number of travel days
