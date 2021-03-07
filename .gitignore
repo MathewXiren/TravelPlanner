@@ -34,6 +34,5 @@ build/
 
 
 ### JAVA ###
-.mvn
 src/main/resources/application.properties
 .idea/
