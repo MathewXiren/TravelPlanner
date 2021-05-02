@@ -8,6 +8,9 @@ React, Google Map React, Ant Design
 ### Backend
 Spring Boot, Spring Web, Spring Security, Hibernate, MySQL
 
+
+
+
 ## Current Functionality
 * [x] User sign up, log in, log out
 * [x] User can search a city and plan a trip route on this city
@@ -26,6 +29,24 @@ Spring Boot, Spring Web, Spring Security, Hibernate, MySQL
 * [ ] Set priority to places(places have to go vs. places want to go)
 * [ ] Based on historical data, directly recommend user hot trip routes
 * [ ] Share trip
+
+
+## Demo
+
+Login Page
+![Login](./img/login.png)
+
+Register Page
+![Register](./img/register.png)
+
+New Trip Page
+![NewTrip](./img/newtrip.png)
+
+Plan Page
+![Plan](./img/plan.png)
+
+Trips
+![Trips](./img/trips.png)
 
 ### Contact
 Want to join us?
