@@ -33,19 +33,19 @@ Spring Boot, Spring Web, Spring Security, Hibernate, MySQL
 
 ## Demo
 
-Login Page
+### Login Page
 ![Login](./img/login.png)
 
-Register Page
+### Register Page
 ![Register](./img/register.png)
 
-New Trip Page
+### New Trip Page
 ![NewTrip](./img/newtrip.png)
 
-Plan Page
+### Plan Page
 ![Plan](./img/plan.png)
 
-Trips
+### Trips
 ![Trips](./img/trips.png)
 
 ### Contact
